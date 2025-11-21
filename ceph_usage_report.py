@@ -1,3 +1,4 @@
+import argparse
 import requests
 import datetime as dt
 from collections import defaultdict
@@ -78,23 +79,54 @@ def aggregate_usage(pool_id: str,
     
     return rows
 
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="Ceph pool usage report from Prometheus"
+    )
+
+    parser.add_argument(
+        "--pool-id",
+        required=True,
+        help="ID of Ceph pool"
+    )
+    parser.add_argument(
+        "--from-date",
+        required=True,
+        help="Start Date, format YYYY-MM-DD"
+    )
+    parser.add_argument(
+        "--to-date",
+        required=True,
+        help="End Date, format YYYY-MM-DD"
+    )
+    parser.add_argument(
+        "--group-by",
+        choices=["day", "month"],
+        default="day",
+        help="Day or Month"
+    )
+    return parser.parse_args()
+
 def main():
-    pool_id = "7"
+    args = parse_args()
 
-    from_date = "2025-10-01"
-    to_date = "2025-11-30"
+    pool_id = args.pool_id
+    from_date = dt.datetime.fromisoformat(args.from_date)
+    to_date = dt.datetime.fromisoformat(args.to_date) + dt.timedelta(days=1)
 
-    daily = aggregate_usage(pool_id, from_date, to_date, group_by="day")
-    print("=== DAILY USAGE ===")
-    for row in daily[:10]:
-        print(f"{row['period']}: avg={row['avg_gib']:.2f} GiB, "
-              f"max={row['max_gib']:.2f} GiB")
-        
-    monthly = aggregate_usage(pool_id, from_date, to_date, group_by="month")
-    print("\=== MONTHLY USAGE ===")
-    for row in monthly:
-        print(f"{row['period']}: avg={row['avg_gib']:.2f} GiB, "
-              f"max={row['max_gib']:.2f} GiB")
+    print(f"Pool ID: {pool_id}")
+    print(f"Rnage : {from_date} -> {to_date}")
+    print(f"Group: {args.group_by}")
+    print("-"*60)
+
+    usage = aggregate_usage(pool_id, from_date, to_date, group_by=args.group_by)
+
+    for item in usage:
+        start = item["start"]
+        end = item ["end"]
+        avg_val = item["avg"]
+        max_val = item["max"]
+        print(f"{start.date()} -> {end.date()} | avg={avg_val:.2f} | max={max_val:.2f}")    
         
 if __name__ == "__main__":
     main()
