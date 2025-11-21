@@ -122,10 +122,11 @@ def main():
     usage = aggregate_usage(pool_id, from_date, to_date, group_by=args.group_by)
 
     for item in usage:
-        period = item["period"]
-        avg_val = item["avg"]
-        max_val = item["max"]
-        print(f"period | avg={avg_val:.2f} | max={max_val:.2f}")    
+        print(
+            f"{item['period']}: "
+            f"avg={item['avg_gib']:.2f} GiB, "
+            f"max={item['max_gib']:.2f} GiB"
+        ) 
         
 if __name__ == "__main__":
     main()
