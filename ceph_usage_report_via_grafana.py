@@ -17,7 +17,7 @@ def parse_date(s: str) -> dt.datetime:
     return dt.datetime.strptime(s, "%Y-%m-%d")
 
 def build_query(pool_id: str) -> str:
-    return f'{METRIC}{{pool_id="{pool_id}}}'
+    return f'{METRIC}{{pool_id="{pool_id}"}}'
 
 def grafana_headers() -> Dict[str, str]:
     headers = {}
