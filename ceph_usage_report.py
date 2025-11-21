@@ -52,8 +52,8 @@ def aggregate_usage(pool_id: str,
                     from_date: str,
                     to_date: str,
                     group_by: str = "day") -> List[Dict]:
-    start = parse_date(from_date)
-    end = parse_date(to_date) + dt.timedelta(days=1)
+    start = from_date
+    end = to_date + dt.timedelta(days=1)
 
     samples = query_range(pool_id, start, end)
     if not samples:
