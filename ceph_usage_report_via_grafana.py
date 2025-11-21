@@ -28,7 +28,7 @@ def grafana_headers() -> Dict[str, str]:
 def query_range(pool_id: str,
                 start: dt.datetime,
                 end: dt.datetime,
-                step: str = STEP) -> LIST[Tuple[float, float]]:
+                step: str = STEP) -> List[Tuple[float, float]]:
     query = build_query(pool_id)
 
     params = {
