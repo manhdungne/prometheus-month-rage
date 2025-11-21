@@ -5,7 +5,7 @@ import datetime as dt
 from collections import defaultdict
 from typing import List, Dict, Tuple, Any
 
-GRAFANA_URL = "https://192.168.169.30:3000"
+GRAFANA_URL = "http://192.168.169.30:3000"
 DATASOURCE_ID = 2
 API_TOKEN = os.getenv("GRAFANA_API_TOKEN")
 
