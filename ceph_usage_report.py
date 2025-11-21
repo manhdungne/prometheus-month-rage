@@ -115,18 +115,17 @@ def main():
     to_date = dt.datetime.fromisoformat(args.to_date) + dt.timedelta(days=1)
 
     print(f"Pool ID: {pool_id}")
-    print(f"Rnage : {from_date} -> {to_date}")
+    print(f"Range : {from_date} -> {to_date}")
     print(f"Group: {args.group_by}")
     print("-"*60)
 
     usage = aggregate_usage(pool_id, from_date, to_date, group_by=args.group_by)
 
     for item in usage:
-        start = item["start"]
-        end = item ["end"]
+        period = item["period"]
         avg_val = item["avg"]
         max_val = item["max"]
-        print(f"{start.date()} -> {end.date()} | avg={avg_val:.2f} | max={max_val:.2f}")    
+        print(f"period | avg={avg_val:.2f} | max={max_val:.2f}")    
         
 if __name__ == "__main__":
     main()
