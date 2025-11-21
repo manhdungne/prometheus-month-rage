@@ -28,7 +28,7 @@ def query_range(pool_id: str,
     }
     r = requests.get(f'{PROM_URL}/api/v1/query_range', params=params)
     r.raise_for_status()
-    data = r.json
+    data = r.json()
     if data["status"] != "success":
         raise RuntimeError(f"Prometheus error: {data}")
     result = data["data"]["result"]
